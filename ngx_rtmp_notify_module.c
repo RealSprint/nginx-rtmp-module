@@ -842,7 +842,7 @@ ngx_rtmp_notify_parse_http_retcode(ngx_rtmp_session_t *s,
      * it can happen in case of empty or broken reply
      */
 
-    return NGX_ERROR;
+    return NGX_BUSY;
 }
 
 
@@ -965,7 +965,7 @@ ngx_rtmp_notify_connect_handle(ngx_rtmp_session_t *s,
     static ngx_str_t    location = ngx_string("location");
 
     rc = ngx_rtmp_notify_parse_http_retcode(s, in);
-    if (rc == NGX_ERROR) {
+    if (rc == NGX_ERROR || rc == NGX_BUSY) {
         return NGX_ERROR;
     }
 
@@ -1017,7 +1017,7 @@ ngx_rtmp_notify_publish_handle(ngx_rtmp_session_t *s,
     static ngx_str_t    location = ngx_string("location");
 
     rc = ngx_rtmp_notify_parse_http_retcode(s, in);
-    if (rc == NGX_ERROR) {
+    if (rc == NGX_ERROR || rc == NGX_BUSY) {
         ngx_rtmp_notify_clear_flag(s, NGX_RTMP_NOTIFY_PUBLISHING);
         return NGX_ERROR;
     }
@@ -1096,7 +1096,7 @@ ngx_rtmp_notify_play_handle(ngx_rtmp_session_t *s,
     static ngx_str_t            location = ngx_string("location");
 
     rc = ngx_rtmp_notify_parse_http_retcode(s, in);
-    if (rc == NGX_ERROR) {
+    if (rc == NGX_ERROR || rc == NGX_BUSY) {
         ngx_rtmp_notify_clear_flag(s, NGX_RTMP_NOTIFY_PLAYING);
         return NGX_ERROR;
     }
